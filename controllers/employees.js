@@ -1,4 +1,31 @@
 const Employee = require("../models/employees");
+const multer = require("multer");
+
+// For file Data
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  // Reject a File
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, false);
+  } else {
+    cb(null, true);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  }
+});
 
 module.exports = app => {
   //GET API Employee
@@ -13,7 +40,7 @@ module.exports = app => {
   });
 
   // Post API Employee
-  app.post("/api/employees", (req, res) => {
+  app.post("/api/employees", upload.single("employeeImage"), (req, res) => {
     const newEmployee = new Employee(req.body);
     newEmployee
       .save()

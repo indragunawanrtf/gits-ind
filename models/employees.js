@@ -8,6 +8,8 @@ const employeeSchema = mongoose.Schema({
   department: String,
   region: String,
   bio: String,
+  employeeImage: String
+
 });
 
 module.exports = mongoose.model('Employees', employeeSchema);
