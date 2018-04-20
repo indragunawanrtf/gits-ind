@@ -11,6 +11,7 @@ mongoose.connect('mongodb://indra-gunawan:admin@ds251889.mlab.com:51889/gits-ind
 });
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
   res.json({ message: "Welcome To My API" })
