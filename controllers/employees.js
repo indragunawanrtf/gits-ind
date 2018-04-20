@@ -24,4 +24,16 @@ module.exports = app => {
         console.error(err);
       });
   });
+
+  // PUT API Employee
+  app.put("/api/employees/:id", (req, res) => {
+    Employee.update({ _id: req.params.id }, req.body)
+      .then(() => {
+        res.json({ message: "Employees Success Updated " });
+      })
+      .catch(err => {
+        console.error(err); 
+      });
+  });
+  
 };
