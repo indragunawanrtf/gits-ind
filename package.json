@@ -1,0 +1,11 @@
+{
+  "name": "gits-ind",
+  "version": "1.0.0",
+  "description": "Gits Indo",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Indra Gunawan",
+  "license": "MIT"
+}
