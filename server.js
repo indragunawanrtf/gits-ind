@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
 
+mongoose.connect('mongodb://indra-gunawan:admin@ds251889.mlab.com:51889/gits-indonesia', {});
+
 app.use(bodyParser.json());
 
 app.listen(PORT, () => {
