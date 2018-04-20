@@ -35,5 +35,14 @@ module.exports = app => {
         console.error(err); 
       });
   });
-  
+
+  // DELETE API Employee
+  app.delete('/api/employees/:id', (req, res) => {
+    Employee.remove({ _id: req.params.id }).then(() => {
+      res.json({ message: "Employees Success Deleted" });
+    }).catch(err => {
+      console.error(err);
+    })
+  })
+
 };
