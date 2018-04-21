@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 
 module.exports = app => {
-  
   // POST API User
   app.post("/api/users/signup", (req, res, next) => {
     User.find({ email: req.body.email })
@@ -59,8 +59,7 @@ module.exports = app => {
         console.log(err);
         res.status(500).json({
           error: err
-        })
+        });
       });
   });
-
 };
