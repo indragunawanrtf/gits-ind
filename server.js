@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = 3000;
@@ -10,6 +11,7 @@ mongoose.connect('mongodb://indra-gunawan:admin@ds251889.mlab.com:51889/gits-ind
   console.log('Connecting To MongoDB OK');
 });
 
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
