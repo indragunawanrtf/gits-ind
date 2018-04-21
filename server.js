@@ -1,15 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
 const app = express();
 const PORT = 3000;
-
-
-mongoose.connect('mongodb://indra-gunawan:admin@ds251889.mlab.com:51889/gits-indonesia', () => {
-  console.log('Connecting To MongoDB OK');
-});
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -20,6 +14,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes
+const connectDB = require('./config/db')(app);
 const employee = require('./controllers/employees')(app);
 const portofolio = require('./controllers/portofolio')(app);
 const handlingError = require('./config/handling-error')(app);
