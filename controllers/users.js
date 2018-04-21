@@ -46,4 +46,21 @@ module.exports = app => {
       });
   });
 
+  // DELETE API User
+  app.delete("/api/users/signup/:userId", (req, res, next) => {
+    User.remove({ _id: req.params.userId })
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          message: "User Success Deleted"
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        })
+      });
+  });
+
 };
