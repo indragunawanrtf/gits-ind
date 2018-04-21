@@ -22,6 +22,7 @@ app.get('/', (req, res) => {
 // Routes
 const employee = require('./controllers/employees')(app);
 const portofolio = require('./controllers/portofolio')(app);
+const handlingError = require('./config/handling-error')(app);
 
 app.listen(PORT, () => {
   console.log(`Server is Running PORT ${PORT}`);
