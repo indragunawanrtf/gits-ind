@@ -46,6 +46,51 @@ module.exports = app => {
       });
   });
 
+  // Login API User
+  app.post("/api/users/login", (req, res, next) => {
+    User.find({ email: req.body.email })
+      .exec()
+      .then(user => {
+        if (user.length < 1) {
+          return res.status(401).json({
+            message: "Sorry, Authentication Failed"
+          });
+        }
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+          if (err) {
+            return res.status(401).json({
+              message: "Sorry, Authentication Failed"
+            });
+          }
+          if (result) {
+            const token = jwt.sign(
+              {
+                email: user[0].email,
+                userId: user[0]._id
+              },
+              process.env.JWT_KEY,
+              {
+                expiresIn: "1h"
+              }
+            );
+            return res.status(200).json({
+              message: "Authentication Successful",
+              token: token
+            });
+          }
+          res.status(401).json({
+            message: "Sorry, Authentication Failed"
+          });
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  });
+
   // DELETE API User
   app.delete("/api/users/signup/:userId", (req, res, next) => {
     User.remove({ _id: req.params.userId })
@@ -62,4 +107,5 @@ module.exports = app => {
         });
       });
   });
+
 };
