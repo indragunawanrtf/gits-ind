@@ -22,8 +22,8 @@ module.exports = app => {
     });
   });
   
-  // UPDATE API Portofolio
-  app.put('/api/portofolio', (req, res) => {
+  // PUT API Portofolio
+  app.put('/api/portofolio/:id', (req, res) => {
     Portofolio.update({ _id: req.params.id }, req.body)
     .then(() => {
       res.json({ message: "Portofolio Success Updated"})
@@ -32,5 +32,5 @@ module.exports = app => {
       console.error(err);
     });
   });
-  
+
 };
