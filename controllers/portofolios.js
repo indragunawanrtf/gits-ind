@@ -1,4 +1,4 @@
-const Portofolio = require("../models/portofolio");
+const Portofolio = require("../models/portofolios");
 
 module.exports = app => {
   // GET API Portofolio
