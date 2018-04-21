@@ -10,8 +10,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // Routes
 const connectDB = require('./config/db')(app);
-const employee = require('./controllers/employees')(app);
-const portofolio = require('./controllers/portofolio')(app);
+const employee = require('./api/controllers/employees')(app);
+const portofolio = require('./api/controllers/portofolio')(app);
 const handlingError = require('./config/handling-error')(app);
 const port = require('./config/port')(app);
-
