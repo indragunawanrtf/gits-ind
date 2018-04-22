@@ -13,6 +13,17 @@ module.exports = app => {
       });
   });
 
+  // GET API Portofolio By ID
+  app.get("/api/portofolio/:id", (req, res) => {
+    Portofolio.findById({ _id: req.params.id })
+      .then(portofolio => {
+        res.json(portofolio);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  });
+
   // POST API Portofolio
   app.post("/api/portofolio", checkAuth, (req, res) => {
     const newPortofolio = new Portofolio(req.body);
@@ -47,5 +58,4 @@ module.exports = app => {
         console.err(err);
       });
   });
-  
 };
