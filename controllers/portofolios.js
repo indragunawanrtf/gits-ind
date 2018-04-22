@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Portofolio = require("../models/portofolios");
 const checkAuth = require("../middleware/check-auth");
 
@@ -26,14 +28,25 @@ module.exports = app => {
 
   // POST API Portofolio
   app.post("/api/portofolio", checkAuth, (req, res) => {
-    const newPortofolio = new Portofolio(req.body);
+    const newPortofolio = new Portofolio({
+      _id: new mongoose.Types.ObjectId(),
+      name_project: req.body.name_project,
+      description: req.body.description
+    });
     newPortofolio
       .save()
-      .then(() => {
-        res.json({ message: "Portofolio Success Created" });
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          message: "Handling POST requests to /portofolio",
+          createdPortofolio: result
+        });
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
