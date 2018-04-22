@@ -41,7 +41,7 @@ module.exports = app => {
   });
 
   // GET API Portofolio By ID
-  app.get("/api/portofolio/:id", (req, res) => {
+  app.get("/api/employees/:id", (req, res) => {
     Employee.findById({ _id: req.params.id })
       .then(employees => {
         res.json(employees);
