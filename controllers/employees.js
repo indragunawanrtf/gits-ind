@@ -1,5 +1,6 @@
 const Employee = require("../models/employees");
 const multer = require("multer");
+const checkAuth = require("../middleware/check-auth");
 
 // For file Data
 const storage = multer.diskStorage({
@@ -40,7 +41,7 @@ module.exports = app => {
   });
 
   // Post API Employee
-  app.post("/api/employees", upload.single("employeeImage"), (req, res) => {
+  app.post("/api/employees", checkAuth, upload.single("employeeImage"), (req, res) => {
     const newEmployee = new Employee(req.body);
     newEmployee
       .save()
@@ -53,7 +54,7 @@ module.exports = app => {
   });
 
   // PUT API Employee
-  app.put("/api/employees/:id", (req, res) => {
+  app.put("/api/employees/:id", checkAuth, (req, res) => {
     Employee.update({ _id: req.params.id }, req.body)
       .then(() => {
         res.json({ message: "Employees Success Updated " });
@@ -64,7 +65,7 @@ module.exports = app => {
   });
 
   // DELETE API Employee
-  app.delete("/api/employees/:id", (req, res) => {
+  app.delete("/api/employees/:id", checkAuth, (req, res) => {
     Employee.remove({ _id: req.params.id })
       .then(() => {
         res.json({ message: "Employees Success Deleted" });
