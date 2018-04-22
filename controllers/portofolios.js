@@ -2,7 +2,7 @@ const Portofolio = require("../models/portofolios");
 const checkAuth = require("../middleware/check-auth");
 
 module.exports = app => {
-  // GET API Portofolio
+  // GET API All Data Portofolio
   app.get("/api/portofolio", (req, res) => {
     Portofolio.find()
       .then(portofolio => {

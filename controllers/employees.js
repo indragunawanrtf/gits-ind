@@ -29,7 +29,7 @@ const upload = multer({
 });
 
 module.exports = app => {
-  //GET API Employee
+  //GET API All Data Employee
   app.get("/api/employees", (req, res) => {
     Employee.find()
       .then(employees => {
@@ -40,18 +40,34 @@ module.exports = app => {
       });
   });
 
-  // Post API Employee
-  app.post("/api/employees", checkAuth, upload.single("employeeImage"), (req, res) => {
-    const newEmployee = new Employee(req.body);
-    newEmployee
-      .save()
-      .then(() => {
-        res.json({ message: "Employees Success Created" });
+  // GET API Portofolio By ID
+  app.get("/api/portofolio/:id", (req, res) => {
+    Employee.findById({ _id: req.params.id })
+      .then(employees => {
+        res.json(employees);
       })
       .catch(err => {
         console.error(err);
       });
   });
+
+  // Post API Employee
+  app.post(
+    "/api/employees",
+    checkAuth,
+    upload.single("employeeImage"),
+    (req, res) => {
+      const newEmployee = new Employee(req.body);
+      newEmployee
+        .save()
+        .then(() => {
+          res.json({ message: "Employees Success Created" });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  );
 
   // PUT API Employee
   app.put("/api/employees/:id", checkAuth, (req, res) => {
