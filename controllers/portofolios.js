@@ -1,4 +1,5 @@
 const Portofolio = require("../models/portofolios");
+const checkAuth = require("../middleware/check-auth");
 
 module.exports = app => {
   // GET API Portofolio
@@ -13,7 +14,7 @@ module.exports = app => {
   });
 
   // POST API Portofolio
-  app.post("/api/portofolio", (req, res) => {
+  app.post("/api/portofolio", checkAuth, (req, res) => {
     const newPortofolio = new Portofolio(req.body);
     newPortofolio
       .save()
@@ -26,7 +27,7 @@ module.exports = app => {
   });
 
   // PUT API Portofolio
-  app.put("/api/portofolio/:id", (req, res) => {
+  app.put("/api/portofolio/:id", checkAuth, (req, res) => {
     Portofolio.update({ _id: req.params.id }, req.body)
       .then(() => {
         res.json({ message: "Portofolio Success Updated" });
@@ -37,7 +38,7 @@ module.exports = app => {
   });
 
   // DELETE API Portofolio
-  app.delete("/api/portofolio/:id", (req, res) => {
+  app.delete("/api/portofolio/:id", checkAuth, (req, res) => {
     Portofolio.remove({ _id: req.params.id })
       .then(() => {
         res.json({ message: "Portofolio Success Deleted" });
