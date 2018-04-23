@@ -5,29 +5,49 @@ const checkAuth = require("../middleware/check-auth");
 
 module.exports = app => {
   // GET API All Data Portofolio
-  app.get("/api/portofolio", (req, res) => {
+  app.get("/api/portofolio", (req, res, next) => {
     Portofolio.find()
+      .select('name_project description _id')
+      .exec()
       .then(portofolio => {
-        res.json(portofolio);
+        const response = {
+          count: portofolio.length,
+          portofolios: portofolio
+        }
+        res.status(200).json(response);
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
   // GET API Portofolio By ID
-  app.get("/api/portofolio/:id", (req, res) => {
-    Portofolio.findById({ _id: req.params.id })
+  app.get("/api/portofolio/:id", (req, res, next) => {
+    const id = req.params.id
+    Portofolio.findById(id)
+      .select('name_project description _id')
+      .exec()
       .then(portofolio => {
-        res.json(portofolio);
+        console.log("From Database", portofolio);
+        if (portofolio) {
+          res.status(200).json(portofolio);
+        } else {
+          res.status(404).json({ message: "No Valid entry found for Provided ID" })
+        }
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
   // POST API Portofolio
-  app.post("/api/portofolio", checkAuth, (req, res) => {
+  app.post("/api/portofolio", checkAuth, (req, res, next) => {
     const newPortofolio = new Portofolio({
       _id: new mongoose.Types.ObjectId(),
       name_project: req.body.name_project,
@@ -38,7 +58,7 @@ module.exports = app => {
       .then(result => {
         console.log(result);
         res.status(201).json({
-          message: "Handling POST requests to /portofolio",
+          message: "Created Portofolio Successfully",
           createdPortofolio: result
         });
       })
