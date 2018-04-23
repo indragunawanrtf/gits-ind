@@ -71,24 +71,30 @@ module.exports = app => {
   });
 
   // PUT API Portofolio
-  app.put("/api/portofolio/:id", checkAuth, (req, res) => {
+  app.put("/api/portofolio/:id", checkAuth, (req, res, next) => {
     Portofolio.update({ _id: req.params.id }, req.body)
       .then(() => {
         res.json({ message: "Portofolio Success Updated" });
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
   // DELETE API Portofolio
-  app.delete("/api/portofolio/:id", checkAuth, (req, res) => {
+  app.delete("/api/portofolio/:id", checkAuth, (req, res, next) => {
     Portofolio.remove({ _id: req.params.id })
       .then(() => {
         res.json({ message: "Portofolio Success Deleted" });
       })
       .catch(err => {
-        console.err(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 };

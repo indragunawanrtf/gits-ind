@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const Employee = require("../models/employees");
 const multer = require("multer");
 const checkAuth = require("../middleware/check-auth");
@@ -30,24 +32,62 @@ const upload = multer({
 
 module.exports = app => {
   //GET API All Data Employee
-  app.get("/api/employees", (req, res) => {
+  app.get("/api/employees", (req, res, next) => {
     Employee.find()
+      .select(
+        "_id name address gender expert department region bio employeeImage"
+      )
+      .exec()
       .then(employees => {
-        res.json(employees);
+        const response = {
+          count: employees.length,
+          portofolios: employees.map(employee => {
+            return {
+              _id: employee.id,
+              name: employee.name,
+              address: employee.address,
+              gender: employee.gender,
+              expert: employee.expert,
+              department: employee.department,
+              region: employee.region,
+              bio: employee.bio,
+              employeeImage: employee.employeeImage
+            };
+          })
+        };
+        res.status(200).json(response);
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
-  // GET API Portofolio By ID
-  app.get("/api/employees/:id", (req, res) => {
-    Employee.findById({ _id: req.params.id })
+  // GET API Employee By ID
+  app.get("/api/employees/:id", (req, res, next) => {
+    const id = req.params.id;
+    Employee.findById(id)
+      .select(
+        "_id name address gender expert department region bio employeeImage"
+      )
+      .exec()
       .then(employees => {
-        res.json(employees);
+        console.log("From Database", employees);
+        if (employees) {
+          res.status(200).json(employees);
+        } else {
+          res
+            .status(404)
+            .json({ message: "No Valid entry found for Provided ID" });
+        }
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
@@ -56,38 +96,60 @@ module.exports = app => {
     "/api/employees",
     checkAuth,
     upload.single("employeeImage"),
-    (req, res) => {
-      const newEmployee = new Employee(req.body);
+    (req, res, next) => {
+      const newEmployee = new Employee({
+        _id: new mongoose.Types.ObjectId(),
+        name: req.body.name,
+        address: req.body.address,
+        gender: req.body.gender,
+        expert: req.body.expert,
+        department: req.body.department,
+        region: req.body.region,
+        bio: req.body.bio,
+        employeeImage: req.file.path
+      });
       newEmployee
         .save()
-        .then(() => {
-          res.json({ message: "Employees Success Created" });
+        .then(result => {
+          console.log(result);
+          res.status(201).json({
+            message: "Employees Success Created"
+          });
         })
         .catch(err => {
-          console.error(err);
+          console.log(err);
+          res.status(500).json({
+            error: err
+          });
         });
     }
   );
 
   // PUT API Employee
-  app.put("/api/employees/:id", checkAuth, (req, res) => {
+  app.put("/api/employees/:id", checkAuth, (req, res, next) => {
     Employee.update({ _id: req.params.id }, req.body)
       .then(() => {
         res.json({ message: "Employees Success Updated " });
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 
   // DELETE API Employee
-  app.delete("/api/employees/:id", checkAuth, (req, res) => {
+  app.delete("/api/employees/:id", checkAuth, (req, res, next) => {
     Employee.remove({ _id: req.params.id })
       .then(() => {
         res.json({ message: "Employees Success Deleted" });
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
   });
 };
