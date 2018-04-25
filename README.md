@@ -1,7 +1,6 @@
 # :fire: RESTFul API With JSON WEB TOKEN NODEJS, MONGODB, EXPRESS[CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
 :elephant: :elephant: :elephant: Tasks Restful API with JSON WEB TOKEN and Bcrpt :elephant: :elephant: :elephant:
-![RESTful API Gits Indonesia](https://gits.co.id/img/logo.png "RESTful API Gits Indonesia")
 
 ## Endpoints
 ________________________________________________________________________
