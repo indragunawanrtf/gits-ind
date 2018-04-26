@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 
-const Portofolio = require("../models/portofolios");
 const checkAuth = require("../middleware/check-auth");
 
 const PortofoliosController = require("../controllers/portofolios");

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Portofolio = require("../models/portofolios");
 
 // GET API All Data Portofolio
